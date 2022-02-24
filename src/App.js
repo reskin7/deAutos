@@ -3,6 +3,7 @@ import { Property } from "./components/Property";
 import { useFetchProps } from "./hooks/useFetchProps";
 import useSound from "use-sound";
 import beep from "./assets/beep.mp3";
+import { sendMessage } from "./bot/ciencuadrasBot";
 
 export const App = () => {
   const [play] = useSound(beep);
@@ -33,11 +34,14 @@ export const App = () => {
         sameLengthDiffProp(state.data, lastPropsId))
     ) {
       alert("Se encontraron nuevas propiedades");
+      sendMessage("Se encontraron nuevas propiedades!",2036886011)
+      sendMessage("Se encontraron nuevas propiedades!",1519487961)
       play();
       setLastPropsId(state.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.data]);
+
 
   return (
     <>
