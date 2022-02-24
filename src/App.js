@@ -34,8 +34,8 @@ export const App = () => {
         sameLengthDiffProp(state.data, lastPropsId))
     ) {
       alert("Se encontraron nuevas propiedades");
-      sendMessage("Se encontraron nuevas propiedades!",2036886011)
-      sendMessage("Se encontraron nuevas propiedades!",1519487961)
+      sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",2036886011)
+      sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",1519487961)
       play();
       setLastPropsId(state.data);
     }
