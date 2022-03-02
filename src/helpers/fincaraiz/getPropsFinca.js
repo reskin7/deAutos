@@ -29,7 +29,7 @@ export const getPropsFinca = async () => {
   const urlPropery = 'https://www.fincaraiz.com.co/_next/data/build/inmueble/apartamento-en-arriendo/aaa/envigado/'
 
 
-      const resp2 = await fetch(`${urlPropery}${possibleResults[0]}`, {
+      const resp2 = await fetch(`${urlPropery}${possibleResults[0].id}`, {
     method: "GET",
     mode: "cors",
     cache: "no-cache",
