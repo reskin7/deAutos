@@ -1,4 +1,6 @@
 import { bdy } from "./bdyFinca";
+import axios from "axios";
+
 
 export const getPropsFinca = async () => {
   const body = JSON.stringify(bdy);
@@ -26,16 +28,19 @@ export const getPropsFinca = async () => {
 
   console.log(possibleResults);
 
-  const urlPropery = 'https://www.fincaraiz.com.co/_next/data/build/inmueble/apartamento-en-arriendo/aaa/envigado/'
+//   const urlPropery =
+//     "https://www.fincaraiz.com.co/_next/data/build/inmueble/apartamento-en-arriendo/aaa/envigado/";
 
+//   const resp2 = await fetch(`${urlPropery}${possibleResults[0].id}.json`, {
+//     method: "GET",
+//   });
 
-      const resp2 = await fetch(`${urlPropery}${possibleResults[0].id}.json`, {
-    method: "GET"
-  })
+//   const res2 = await resp2.json();
 
-  const res2 = await resp2.json();
+axios.get('https://www.fincaraiz.com.co/_next/data/build/inmueble/apartamento-en-arriendo/aaaa/envigado/7087957.json')
+.then(res => console.log(res)).catch(console.log("no se pudo obtener"))
 
-  console.log(res2)
+//   console.log(res2);
 
   //   if(!success){
   //     return []
