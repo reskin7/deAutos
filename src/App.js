@@ -4,6 +4,7 @@ import { useFetchProps } from "./hooks/useFetchProps";
 import useSound from "use-sound";
 import beep from "./assets/beep.mp3";
 import { sendMessage } from "./bot/ciencuadrasBot";
+import { getPropsFinca } from "./helpers/fincaraiz/getPropsFinca";
 
 export const App = () => {
   const [play] = useSound(beep);
@@ -27,15 +28,16 @@ export const App = () => {
     console.log("LAST PROPS ID", lastPropsId);
     console.log("LAST PROPS ID length", lastPropsId.length);
     console.log("state data length ", state.data.length);
+    getPropsFinca();
 
     if (
       state.data.length !== 0 &&
       (state.data.length !== lastPropsId.length ||
         sameLengthDiffProp(state.data, lastPropsId))
     ) {
-      alert("Se encontraron nuevas propiedades");
-      sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",2036886011)
-      sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",1519487961)
+      // alert("Se encontraron nuevas propiedades");
+      // sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",2036886011)
+      // sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",1519487961)
       play();
       setLastPropsId(state.data);
     }
