@@ -30,15 +30,7 @@ export const getPropsFinca = async () => {
 
 
       const resp2 = await fetch(`${urlPropery}${possibleResults[0].id}.json`, {
-    method: "GET",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
+    method: "GET"
   })
 
   const res2 = await resp2.json();
