@@ -18,3 +18,7 @@ code {
   justify-content: center;
   align-content: flex-start;
 }
+
+.text-muted {
+  margin-left: 20px;
+}

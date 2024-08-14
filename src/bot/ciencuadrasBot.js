@@ -1,6 +1,6 @@
-const TOKEN = "5248734432:AAE2PXyV8qEniQMAKu2CSOL42I0c7zOK0Oo";
+const TOKEN = '5248734432:AAE2PXyV8qEniQMAKu2CSOL42I0c7zOK0Oo'
 
-const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
+const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`
 
 //https://api.telegram.org/bot5248734432:AAE2PXyV8qEniQMAKu2CSOL42I0c7zOK0Oo/sendMessage
 
@@ -11,21 +11,21 @@ export const sendMessage = async (message, chatId) => {
   const body = JSON.stringify({
     chat_id: chatId,
     text: message,
-  });
+  })
 
-  const url = `${TELEGRAM_API}/sendMessage`;
+  const url = `${TELEGRAM_API}/sendMessage`
   const resp = await fetch(url, {
-    method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
     body,
-  });
+  })
   console.log(resp)
-//   const { ok } = await resp.json();
-};
+  //   const { ok } = await resp.json();
+}

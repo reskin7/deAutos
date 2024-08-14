@@ -1,47 +1,52 @@
-import { useEffect, useState } from "react";
-import { Property } from "./components/Property";
-import { useFetchProps } from "./hooks/useFetchProps";
-import useSound from "use-sound";
-import beep from "./assets/beep.mp3";
-import { sendMessage } from "./bot/ciencuadrasBot";
+import { useEffect, useState } from 'react'
+import { Car } from './components/Car'
+import { useFetchCars } from './hooks/useFetchCars'
+import { Pagination } from './components/Pagination'
 
 export const App = () => {
-  const [play] = useSound(beep);
-  let [lastPropsId, setLastPropsId] = useState([]);
+  let [lastCarsId, setLastCarsId] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [carsPerPage] = useState(100) // Set the number of cars per page
 
   const sameLengthDiffProp = (a, b) => {
-    a.sort();
-    b.sort();
+    a.sort()
+    b.sort()
     for (let i = 0; i < a.length; i++) {
       if (b[i] !== a[i]) {
-        return false;
+        return false
       }
     }
-    return true;
-  };
+    return true
+  }
 
-  const state = useFetchProps();
+  const state = useFetchCars()
 
   useEffect(() => {
-    setLastPropsId(state.data);
-    console.log("LAST PROPS ID", lastPropsId);
-    console.log("LAST PROPS ID length", lastPropsId.length);
-    console.log("state data length ", state.data.length);
+    setLastCarsId(state.data)
+    // console.log('LAST PROPS ID', lastCarsId)
+    // console.log('LAST PROPS ID length', lastCarsId.length)
+    // console.log('state data length ', state.totalResults)
 
     if (
-      state.data.length !== 0 &&
-      (state.data.length !== lastPropsId.length ||
-        sameLengthDiffProp(state.data, lastPropsId))
+      state.totalResults !== 0 &&
+      (state.totalResults !== lastCarsId.length ||
+        sameLengthDiffProp(state.data, lastCarsId))
     ) {
-      alert("Se encontraron nuevas propiedades");
-      sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",2036886011)
-      sendMessage("Se encontraron nuevas propiedades! https://reskin7.github.io/",1519487961)
-      play();
-      setLastPropsId(state.data);
+      setLastCarsId(state.data)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.data]);
+  }, [state.data])
 
+  // Calculate the index range for the current page
+  const indexOfLastCar = currentPage * carsPerPage
+  const indexOfFirstCar = indexOfLastCar - carsPerPage
+  const currentCars = state.data.slice(indexOfFirstCar, indexOfLastCar)
+
+  // Function to handle page changes
+  const paginate = pageNumber => {
+    setCurrentPage(pageNumber)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <>
@@ -49,22 +54,35 @@ export const App = () => {
         <div> CARGANDO </div>
       ) : (
         <>
-          <small className="text-muted">
-            Updated: {new Date(Date.now()).toLocaleString().split(",")[1]}
+          <small className='text-muted'>
+            Updated: {new Date(Date.now()).toLocaleString().split(',')[1]}
           </small>
-          <p className="card-text">
-            <small className="text-muted">
-              Resultados obtenidos: {state.data.length}
+          <p className='card-text'>
+            <small className='text-muted'>
+              Resultados obtenidos: {state.totalResults}
             </small>
           </p>
-          {state.data.length > 0 ? (
+          <Pagination
+            carsPerPage={carsPerPage}
+            totalCars={state.totalResults}
+            paginate={paginate}
+            currentPage={currentPage}
+            totalPages={state.totalPages}
+          />
+          {state.totalResults > 0 ? (
             <>
-              <div className="card-columns">
-                {state.data &&
-                  state.data.map((prop) => {
-                    return <Property {...prop} key={prop.id} />;
+              <div className='card-columns'>
+                {currentCars &&
+                  currentCars.map(car => {
+                    return <Car {...car} key={car.id} />
                   })}
               </div>
+              <Pagination
+                carsPerPage={carsPerPage}
+                totalCars={state.totalResults}
+                paginate={paginate}
+                currentPage={currentPage}
+              />
             </>
           ) : (
             <div>No se encontraron resultados</div>
@@ -72,5 +90,5 @@ export const App = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}
