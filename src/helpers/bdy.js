@@ -1,8 +1,8 @@
-export const getBdy = page => {
+export const getBdy = (page, carsPerPage) => {
   return {
     pagination: {
       page: page,
-      size: 35,
+      size: carsPerPage,
     },
     sort: {
       order: 'desc',

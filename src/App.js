@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { Car } from './components/Car'
 import { useFetchCars } from './hooks/useFetchCars'
 import { Pagination } from './components/Pagination'
+import { SizeSelector } from './components/SizeSelector'
 
 export const App = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const carsPerPage = 20 // Set the number of cars per page
+  const [currentSize, setCurrentSize] = useState(15)
 
   // Pass currentPage to the useFetchCars hook
-  const state = useFetchCars(currentPage)
+  const state = useFetchCars(currentPage, currentSize)
 
   // Calculate the cars to display on the current page
   const currentCars = state.data
@@ -19,20 +20,31 @@ export const App = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleSize = sizeNumber => {
+    setCurrentSize(sizeNumber)
+  }
+
   return (
     <>
       {state.loading ? (
         <div> CARGANDO </div>
       ) : (
         <>
-          <small className='text-muted'>
-            Updated: {new Date(Date.now()).toLocaleString().split(',')[1]}
-          </small>
-          <p className='card-text'>
+          <div className='bg-white text-white p-4'>
             <small className='text-muted'>
-              Resultados obtenidos: {state.totalResults}
+              Updated: {new Date(Date.now()).toLocaleString().split(',')[1]}
             </small>
-          </p>
+            <p className='card-text'>
+              <small className='text-muted'>
+                Resultados obtenidos: {state.totalResults}
+              </small>
+            </p>
+            <SizeSelector
+              size={handleSize}
+              currentSize={currentSize}
+              totalPages={state.totalPages}
+            />
+          </div>
           <Pagination
             paginate={handlePagination}
             currentPage={currentPage}
