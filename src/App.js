@@ -1,49 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Car } from './components/Car'
 import { useFetchCars } from './hooks/useFetchCars'
 import { Pagination } from './components/Pagination'
 
 export const App = () => {
-  let [lastCarsId, setLastCarsId] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [carsPerPage] = useState(100) // Set the number of cars per page
+  const carsPerPage = 20 // Set the number of cars per page
 
-  const sameLengthDiffProp = (a, b) => {
-    a.sort()
-    b.sort()
-    for (let i = 0; i < a.length; i++) {
-      if (b[i] !== a[i]) {
-        return false
-      }
-    }
-    return true
-  }
+  // Pass currentPage to the useFetchCars hook
+  const state = useFetchCars(currentPage)
 
-  const state = useFetchCars()
-
-  useEffect(() => {
-    setLastCarsId(state.data)
-    // console.log('LAST PROPS ID', lastCarsId)
-    // console.log('LAST PROPS ID length', lastCarsId.length)
-    // console.log('state data length ', state.totalResults)
-
-    if (
-      state.totalResults !== 0 &&
-      (state.totalResults !== lastCarsId.length ||
-        sameLengthDiffProp(state.data, lastCarsId))
-    ) {
-      setLastCarsId(state.data)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.data])
-
-  // Calculate the index range for the current page
-  const indexOfLastCar = currentPage * carsPerPage
-  const indexOfFirstCar = indexOfLastCar - carsPerPage
-  const currentCars = state.data.slice(indexOfFirstCar, indexOfLastCar)
+  // Calculate the cars to display on the current page
+  const currentCars = state.data
 
   // Function to handle page changes
-  const paginate = pageNumber => {
+  const handlePagination = pageNumber => {
     setCurrentPage(pageNumber)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -63,30 +34,24 @@ export const App = () => {
             </small>
           </p>
           <Pagination
-            carsPerPage={carsPerPage}
-            totalCars={state.totalResults}
-            paginate={paginate}
+            paginate={handlePagination}
             currentPage={currentPage}
             totalPages={state.totalPages}
           />
           {state.totalResults > 0 ? (
-            <>
-              <div className='card-columns'>
-                {currentCars &&
-                  currentCars.map(car => {
-                    return <Car {...car} key={car.id} />
-                  })}
-              </div>
-              <Pagination
-                carsPerPage={carsPerPage}
-                totalCars={state.totalResults}
-                paginate={paginate}
-                currentPage={currentPage}
-              />
-            </>
+            <div className='card-columns'>
+              {currentCars.map(car => (
+                <Car {...car} key={car.id} />
+              ))}
+            </div>
           ) : (
             <div>No se encontraron resultados</div>
           )}
+          <Pagination
+            paginate={handlePagination}
+            currentPage={currentPage}
+            totalPages={state.totalPages}
+          />
         </>
       )}
     </>

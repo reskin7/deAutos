@@ -34,5 +34,7 @@ export const useFetchCars = (page = 1) => {
     return () => clearInterval(intervalId)
   }, [page]) // Include `page` as a dependency
 
+  console.log('useFetchCars', state)
+
   return state
 }

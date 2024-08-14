@@ -1,18 +1,13 @@
-export const Pagination = ({
-  carsPerPage,
-  totalCars,
-  paginate,
-  currentPage,
-}) => {
+export const Pagination = ({ paginate, currentPage, totalPages }) => {
   const pageNumbers = []
 
-  for (let i = 1; i <= Math.ceil(totalCars / carsPerPage); i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i)
   }
 
   return (
     <nav>
-      <ul className='pagination'>
+      <ul className='pagination justify-content-center'>
         <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
           <button
             onClick={() => paginate(currentPage - 1)}
