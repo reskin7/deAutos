@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getCars } from '../helpers/getCars'
 
-export const useFetchCars = (page = 1) => {
+export const useFetchCars = (page = 1, currentSize) => {
   const [state, setState] = useState({
     data: [],
     totalResults: 0,
@@ -13,7 +13,7 @@ export const useFetchCars = (page = 1) => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const cars = await getCars(page)
+        const cars = await getCars(page, currentSize)
         setState({
           data: cars.cars,
           totalResults: cars.totalResults,
@@ -32,7 +32,7 @@ export const useFetchCars = (page = 1) => {
     // Fetch data every 15 minutes
     const intervalId = setInterval(fetchCars, 60000 * 15)
     return () => clearInterval(intervalId)
-  }, [page]) // Include `page` as a dependency
+  }, [page, currentSize])
 
   console.log('useFetchCars', state)
 
